@@ -10,9 +10,10 @@ const userModel =mongoose.model("apiUsers",{
         maxLength:[100,"maximum 100 charecters"],
         required:[true,'lastname is required']},
     gender:Number,
-    active:Boolean,
+    active:{type:Boolean,default:true},
     email:{
         type:String,
+        unique:true,
         required:[true,"email is required"],
         validate:{
             validator:v=> /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v),
