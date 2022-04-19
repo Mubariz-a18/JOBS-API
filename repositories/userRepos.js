@@ -36,8 +36,16 @@ const update = (email, updateData) => {
     })
 }
 
+const getUser = ()=>{
+        const filter={}
+        const projection = {_id:0,__v:0,password:0}
+        return userModel.find(filter,projection)
+}
+
+
 
 module.exports = {
     add,
+    getUser,
     update
 }

@@ -38,4 +38,15 @@ const update = async(req,res)=>{
 }
 
 
-module.exports = { register, update }
+const getUser = async (req,res)=>{
+    try{
+        const users =  await userRepos.getUser()
+        res.status(200)
+        res.json(users)
+        
+    }catch(e){
+        res.status(500).send('internal server error')
+    }
+}
+
+module.exports = { register, update ,getUser}
