@@ -15,6 +15,7 @@ const handleErrors = (e,res)=>{
 const register = async(req,res)=>{
     try{
         const data = req.body;
+        data.createdAt = Date.now()
         await userRepos.add(data)
         res.status(200)
         res.send("successfully signedup")
