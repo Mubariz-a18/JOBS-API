@@ -1,5 +1,6 @@
 const express = require('express')
 const defaultRoutes = require('./Routers/defaultRoutes')
+const userRoute = require('./Routers/userRoutes')
 const dataBase = require('./config/index')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
@@ -15,5 +16,7 @@ mongoose.connect(dataBase.dbConStr)
 
 
 app.use(bodyParser.json())
+
+app.use('/',userRoute)
 app.use('/',defaultRoutes)
 

@@ -8,10 +8,11 @@ function get(req,res){
 async function health(req,res){
     try{
         await mongoose.connect(dataBase.dbConStr)
-        res.json({db:"up"})
         res.status(201)
+        res.json({db:"up"})
+        mongoose.connection.close()
     }catch(e){
-        res.send(e,'internal server error')
+        res.send('internal server error')
         res.status(500)
     }
    
