@@ -40,7 +40,10 @@ const update = async(req,res)=>{
 
 const getUser = async (req,res)=>{
     try{
-        const users =  await userRepos.getUser()
+        const pageIndex = +req.params.page;
+        const pageSize = +req.params.size;
+        console.log(pageIndex,pageSize)
+        const users =  await userRepos.getUser(pageIndex,pageSize)
         res.status(200)
         res.json(users)
         
@@ -49,4 +52,10 @@ const getUser = async (req,res)=>{
     }
 }
 
-module.exports = { register, update ,getUser}
+const getUserbyEmail = async (req,res)=>{
+    const email = req.params.email;
+    const user = await userRepos.getUserByEmail(email)
+    res.status(200).send(user)
+}
+
+module.exports = { register, update ,getUser,getUserbyEmail}

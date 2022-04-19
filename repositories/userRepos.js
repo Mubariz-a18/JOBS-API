@@ -36,16 +36,25 @@ const update = (email, updateData) => {
     })
 }
 
-const getUser = ()=>{
+const getUser = (pageIndex,pageSize)=>{
         const filter={}
+        const skipRows = Math.ceil(pageIndex*pageSize)
         const projection = {_id:0,__v:0,password:0}
-        return userModel.find(filter,projection)
+        return userModel.find(filter,projection).skip(skipRows).limit(pageSize)
 }
 
+
+const getUserByEmail = (email)=>{
+        const filter = {email:email}
+        
+       const projection = {_id : 0,__v:0,password:0}
+        return userModel.findOne(filter,projection)
+}
 
 
 module.exports = {
     add,
     getUser,
-    update
+    update,
+    getUserByEmail
 }
