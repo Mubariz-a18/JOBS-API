@@ -38,9 +38,14 @@ const update = (email, updateData) => {
 
 const getUser = (pageIndex,pageSize)=>{
         const filter={}
-        const skipRows = Math.ceil(pageIndex*pageSize)
+        const skipRows =(pageIndex*pageSize)
         const projection = {_id:0,__v:0,password:0}
         return userModel.find(filter,projection).skip(skipRows).limit(pageSize)
+}
+
+const getUserCount = ()=>{
+        
+        return userModel.count()
 }
 
 
@@ -56,5 +61,6 @@ module.exports = {
     add,
     getUser,
     update,
-    getUserByEmail
+    getUserByEmail,
+    getUserCount
 }

@@ -42,10 +42,20 @@ const getUser = async (req,res)=>{
     try{
         const pageIndex = +req.params.page;
         const pageSize = +req.params.size;
-        console.log(pageIndex,pageSize)
+        const totalRecord = await userRepos.getUserCount()
+        const totalPages = Math.ceil(totalRecord/pageSize)
         const users =  await userRepos.getUser(pageIndex,pageSize)
+
+        const responose = {
+            users,
+            metaData:{
+                totalRecord,
+                totalPages
+            }
+        }
+
         res.status(200)
-        res.json(users)
+        res.json(responose)
         
     }catch(e){
         res.status(500).send('internal server error')
