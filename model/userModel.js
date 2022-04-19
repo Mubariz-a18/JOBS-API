@@ -18,7 +18,7 @@ const userModel = mongoose.model("apiUsers", {
         ],
         maxLength: [
             100, "maximum 100 charecters"
-        ],
+        ], 
         required: [true, 'lastname is required']
     },
     gender: Number,

@@ -25,4 +25,17 @@ const register = async(req,res)=>{
 }
 
 
-module.exports = { register }
+const update = async(req,res)=>{
+    try{
+        const email = req.params.email;
+        await userRepos.update(email,req.body)
+        res.status(201).send('updated')
+    }catch(e){
+        console.log(e)
+        res.status(500)
+        res.send('internl server error')
+    }
+}
+
+
+module.exports = { register, update }
