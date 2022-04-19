@@ -40,11 +40,13 @@ const update = async(req,res)=>{
 
 const getUser = async (req,res)=>{
     try{
-        const pageIndex = +req.params.page;
-        const pageSize = +req.params.size;
-        const totalRecord = await userRepos.getUserCount()
+        const pageIndex = +req.params.page || 0;
+        const pageSize = +req.params.size || 10;
+        const name = req.query.name || '';
+        const degree = +req.query.degree 
+        const totalRecord = await userRepos.getUserCount(name,degree)
         const totalPages = Math.ceil(totalRecord/pageSize)
-        const users =  await userRepos.getUser(pageIndex,pageSize)
+        const users =  await userRepos.getUser(pageIndex,pageSize,name,degree)
 
         const responose = {
             users,
@@ -58,6 +60,7 @@ const getUser = async (req,res)=>{
         res.json(responose)
         
     }catch(e){
+        console.log(e)
         res.status(500).send('internal server error')
     }
 }

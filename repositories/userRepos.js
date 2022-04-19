@@ -22,7 +22,7 @@ const update = (email, updateData) => {
         email
     }, {
         $set: {
-                firstName,
+            firstName,
             lastName,
             mobile,
             skills,
@@ -36,24 +36,48 @@ const update = (email, updateData) => {
     })
 }
 
-const getUser = (pageIndex,pageSize)=>{
-        const filter={}
-        const skipRows =(pageIndex*pageSize)
-        const projection = {_id:0,__v:0,password:0}
-        return userModel.find(filter,projection).skip(skipRows).limit(pageSize)
+const getUser = (pageIndex, pageSize, name,degree) => {
+    const filter = {
+        $or:[
+            {firstName:{$regex:name}},
+            {lastName:{$regex:name}}
+        ]
+    }
+    if(degree) filter.degree = degree
+    
+    const skipRows = (pageIndex * pageSize)
+    const projection = {
+        _id: 0,
+        __v: 0,
+        password: 0
+    }
+    return userModel.find(filter, projection).skip(skipRows).limit(pageSize)
 }
 
-const getUserCount = ()=>{
-        
-        return userModel.count()
+const getUserCount = (name,degree) => {
+    const filter = {
+       $or:[
+           {firstName:{$regex:name}},
+           {lastName:{$regex:name}}
+       ]
+    }
+    if(degree)  filter.degree = degree
+    
+    return userModel.count(filter)
 }
 
 
-const getUserByEmail = (email)=>{
-        const filter = {email:email}
-        
-       const projection = {_id : 0,__v:0,password:0}
-        return userModel.findOne(filter,projection)
+const getUserByEmail = (email) => {
+    const filter = {
+        email: email
+    }
+
+    const projection = {
+        _id: 0,
+        __v: 0,
+        password: 0
+    }
+    return userModel.findOne(filter, projection)
 }
 
 
