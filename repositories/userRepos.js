@@ -36,25 +36,27 @@ const update = (email, updateData) => {
     })
 }
 
-const getUser = (pageIndex, pageSize, name,degree) => {
+const getUser = (pageIndex, pageSize, options) => {
+    const {name,degree,qualification} = options
     const filter = {
         $or:[
             {firstName:{$regex:name}},
-            {lastName:{$regex:name}}
+            {lastName:{$regex:qualification}}
         ]
     }
     if(degree) filter.degree = degree
-    
+    if(qualification) filter.qualification = qualification
     const skipRows = (pageIndex * pageSize)
     const projection = {
         _id: 0,
         __v: 0,
         password: 0
     }
-    return userModel.find(filter, projection).skip(skipRows).limit(pageSize)
+    return userModel.find(filter, projection).sort({updatedAt:-1}).skip(skipRows).limit(pageSize)
 }
 
-const getUserCount = (name,degree) => {
+const getUserCount = (options) => {
+    const {name,degree,qualification} = options
     const filter = {
        $or:[
            {firstName:{$regex:name}},
@@ -62,6 +64,10 @@ const getUserCount = (name,degree) => {
        ]
     }
     if(degree)  filter.degree = degree
+    if(qualification)  filter.qualification = qualification
+
+
+    
     
     return userModel.count(filter)
 }
