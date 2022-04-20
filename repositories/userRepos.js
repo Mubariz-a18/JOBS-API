@@ -48,7 +48,7 @@ const getUser = (pageIndex, pageSize, options) => {
     if(qualification) filter.qualification = qualification
     if(skills){
         const splitArr = skills.split(',')
-        filter.skills = {$all:splitArr};
+        filter.skills = {$all:(splitArr)};
     } 
         const skipRows = (pageIndex * pageSize)
     const projection = {
@@ -96,11 +96,16 @@ const getUserByEmail = (email) => {
     return userModel.findOne(filter, projection)
 }
 
+const getUserPassword =(email)=>{
+    const projection = {password:1}
+    return userModel.findOne({email},projection)
+}
 
 module.exports = {
     add,
     getUser,
     update,
     getUserByEmail,
-    getUserCount
+    getUserCount,
+    getUserPassword
 }

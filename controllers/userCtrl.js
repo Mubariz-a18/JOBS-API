@@ -1,4 +1,5 @@
 const userRepos = require('../repositories/userRepos')
+const cryptoUtils = require('../utils/cryptoUtils')
 const alreadyExist = (e) => {
     e.message && e.message.indexOf("duplicate key") > -1
 }
@@ -18,6 +19,7 @@ const handleErrors = (e, res) => {
 const register = async (req, res) => {
     try {
         const data = req.body;
+        data.password = await getHash(data.password)
         data.createdAt = Date.now()
         await userRepos.add(data)
         res.status(200)
@@ -49,9 +51,9 @@ const getUser = async (req, res) => {
             name: req.query.name || '',
             degree: + req.query.degree,
             qualification: + req.query.qualification,
-            skills : req.query.skills,
-            sort :req.query.sort,
-            sortDir:+req.query.sortDir || 1
+            skills: req.query.skills,
+            sort: req.query.sort,
+            sortDir: + req.query.sortDir || 1
 
         }
         const totalRecord = await userRepos.getUserCount(options)
@@ -81,9 +83,29 @@ const getUserbyEmail = async (req, res) => {
     res.status(200).send(user)
 }
 
+const signin = async (req, res) => {
+    const payLoad = req.body
+    const dbUser = await userRepos.getUserPassword(payLoad.email)
+    if (! dbUser) {
+        res.status(401).send('unauthorise')
+        return
+    }
+    const result = await cryptoUtils.comparePwd(payLoad.password, dbUser.password)
+    if (result) {
+        res.status(201)
+        res.send('login successfull')
+
+    } else {
+        res.status(401)
+        res.send('unauthorise')
+    }
+
+}
+
 module.exports = {
     register,
     update,
     getUser,
-    getUserbyEmail
+    getUserbyEmail,
+    signin
 }
