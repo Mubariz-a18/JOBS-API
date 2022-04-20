@@ -6,6 +6,8 @@ const alreadyExist = (e) => {
 const haveValidationErr = (e) => {
     e._message === 'apiUsers validation failed'
 }
+
+
 const handleErrors = (e, res) => {
     if (alreadyExist) {
         res.status(409).send('user already exists')
@@ -19,12 +21,13 @@ const handleErrors = (e, res) => {
 const register = async (req, res) => {
     try {
         const data = req.body;
-        data.password = await getHash(data.password)
+        data.password = await cryptoUtils.getHash(data.password)
         data.createdAt = Date.now()
         await userRepos.add(data)
         res.status(200)
         res.send("successfully signedup")
     } catch (e) {
+        console.log(e)
         handleErrors(e, res)
     }
 }

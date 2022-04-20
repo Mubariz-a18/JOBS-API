@@ -16,17 +16,6 @@ mongoose.connect(dataBase.dbConStr)
 
 
 app.use(bodyParser.json())
-
-// function middleWare(req,res,next){
-//     // res.status(401)
-//     // res.send('unauthorised')
-//     next()
-// }
-
-
 app.use('/',defaultRoutes)
-
-// app.use(middleWare)
-
 app.use('/',userRoute)
 
