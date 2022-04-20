@@ -37,16 +37,20 @@ const update = (email, updateData) => {
 }
 
 const getUser = (pageIndex, pageSize, options) => {
-    const {name,degree,qualification} = options
+    const {name,degree,qualification,skills} = options
     const filter = {
         $or:[
-            {firstName:{$regex:name}},
-            {lastName:{$regex:qualification}}
+            {firstName:{$regex:name,$options:'i'}},
+            {lastName:{$regex:name,$options:'i'}}
         ]
     }
     if(degree) filter.degree = degree
     if(qualification) filter.qualification = qualification
-    const skipRows = (pageIndex * pageSize)
+    if(skills){
+        const splitArr = skills.split(',')
+        filter.skills = {$all:splitArr};
+    } 
+        const skipRows = (pageIndex * pageSize)
     const projection = {
         _id: 0,
         __v: 0,
@@ -56,16 +60,20 @@ const getUser = (pageIndex, pageSize, options) => {
 }
 
 const getUserCount = (options) => {
-    const {name,degree,qualification} = options
+    const {name,degree,qualification,skills} = options
     const filter = {
        $or:[
-           {firstName:{$regex:name}},
-           {lastName:{$regex:name}}
+        {firstName:{$regex:name,$options:'i'}},
+        {lastName:{$regex:name,$options:'i'}}
        ]
     }
     if(degree)  filter.degree = degree
     if(qualification)  filter.qualification = qualification
-
+    if(skills){
+        const splitArr = skills.split(',')
+        filter.skills = {$all:splitArr};
+        console.log(filter.skills)
+    } 
 
     
     

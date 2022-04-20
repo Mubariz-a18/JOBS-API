@@ -50,6 +50,10 @@ const userModel = mongoose.model("apiUsers", {
     },
     qualification: Number,
     degree: Number,
+    role:{
+        type:Number,
+        default:0
+    },
     skills: [String],
     passOut: Number,
     image: String,
