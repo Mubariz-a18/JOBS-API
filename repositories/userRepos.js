@@ -56,7 +56,9 @@ const getUser = (pageIndex, pageSize, options) => {
         __v: 0,
         password: 0
     }
-    return userModel.find(filter, projection).sort({updatedAt:-1}).skip(skipRows).limit(pageSize)
+    var sort =options.sort ? {[options.sort]:options.sortDir}: {updatedAt : -1}
+
+    return userModel.find(filter, projection).collation({'locale':'en'}).sort(sort).skip(skipRows).limit(pageSize)
 }
 
 const getUserCount = (options) => {
