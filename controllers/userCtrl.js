@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken')
 const userRepos = require('../repositories/userRepos')
 const cryptoUtils = require('../utils/cryptoUtils')
 const alreadyExist = (e) => {
@@ -27,7 +28,6 @@ const register = async (req, res) => {
         res.status(200)
         res.send("successfully signedup")
     } catch (e) {
-        console.log(e)
         handleErrors(e, res)
     }
 }
@@ -88,15 +88,16 @@ const getUserbyEmail = async (req, res) => {
 
 const signin = async (req, res) => {
     const payLoad = req.body
-    const dbUser = await userRepos.getUserPassword(payLoad.email)
+    const dbUser = await userRepos.getUserByToken(payLoad.email)
     if (! dbUser) {
         res.status(401).send('unauthorise')
         return
     }
     const result = await cryptoUtils.comparePwd(payLoad.password, dbUser.password)
     if (result) {
+        const token = cryptoUtils.generateToken(dbUser)
         res.status(201)
-        res.send('login successfull')
+        res.send(token)
 
     } else {
         res.status(401)

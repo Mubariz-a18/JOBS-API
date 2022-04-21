@@ -96,8 +96,8 @@ const getUserByEmail = (email) => {
     return userModel.findOne(filter, projection)
 }
 
-const getUserPassword =(email)=>{
-    const projection = {password:1}
+const getUserByToken =(email)=>{
+    const projection = {password:1,role:1,email:1}
     return userModel.findOne({email},projection)
 }
 
@@ -107,5 +107,5 @@ module.exports = {
     update,
     getUserByEmail,
     getUserCount,
-    getUserPassword
+    getUserByToken
 }
