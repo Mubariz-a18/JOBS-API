@@ -41,7 +41,7 @@ const addRecruiter = async (req, res) => {
         await userRepos.add(user)
         res.status(201).send()
     }catch(e){
-        //handleErrors(e)
+        handleErrors(e)
         console.log(e)
     }
 }
@@ -97,7 +97,7 @@ const getUser = async (req, res) => {
 const getUserbyEmail = async (req, res) => {
     const email = req.params.email;
     const user = await userRepos.getUserByEmail(email)
-    res.status(200).send(user)
+    res.status(201).send(user)
 }
 
 const signin = async (req, res) => {
