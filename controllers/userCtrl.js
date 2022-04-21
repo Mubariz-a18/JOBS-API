@@ -32,6 +32,20 @@ const register = async (req, res) => {
     }
 }
 
+const addRecruiter = async (req, res) => {
+    try {
+        const user = req.body;
+        user.password = await cryptoUtils.getHash(user.password)
+        user.createdAt = Date.now()
+        user.role = 1;
+        await userRepos.add(user)
+        res.status(201).send()
+    }catch(e){
+        //handleErrors(e)
+        console.log(e)
+    }
+}
+
 
 const update = async (req, res) => {
     try {
@@ -111,5 +125,6 @@ module.exports = {
     update,
     getUser,
     getUserbyEmail,
-    signin
+    signin,
+    addRecruiter
 }
