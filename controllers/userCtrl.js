@@ -1,6 +1,7 @@
-const jwt = require('jsonwebtoken')
+const logger = require('../logger')
 const userRepos = require('../repositories/userRepos')
 const cryptoUtils = require('../utils/cryptoUtils')
+
 const alreadyExist = (e) => {
     e.message && e.message.indexOf("duplicate key") > -1
 }
@@ -10,6 +11,7 @@ const haveValidationErr = (e) => {
 
 
 const handleErrors = (e, res) => {
+    logger.error({message:'failed to create user',error:e})
     if (alreadyExist) {
         res.status(409).send('user already exists')
     } else if (haveValidationErr) {
@@ -25,6 +27,7 @@ const register = async (req, res) => {
         data.password = await cryptoUtils.getHash(data.password)
         data.createdAt = Date.now()
         await userRepos.add(data)
+        logger.info({message:"user successfully added"})
         res.status(200)
         res.send("successfully signedup")
     } catch (e) {
@@ -39,6 +42,7 @@ const addRecruiter = async (req, res) => {
         user.createdAt = Date.now()
         user.role = 1;
         await userRepos.add(user)
+        logger.info({message:"user successfully added"})
         res.status(201).send()
     }catch(e){
         handleErrors(e)
@@ -51,11 +55,10 @@ const update = async (req, res) => {
     try {
         const email = req.params.email;
         await userRepos.update(email, req.body)
+        logger.info({message:"user updated successfully"})
         res.status(201).send('updated')
     } catch (e) {
-        console.log(e)
-        res.status(500)
-        res.send('internl server error')
+        handleErrors(e,res)
     }
 }
 
@@ -76,7 +79,7 @@ const getUser = async (req, res) => {
         const totalRecord = await userRepos.getUserCount(options)
         const totalPages = Math.ceil(totalRecord / pageSize)
         const users = await userRepos.getUser(pageIndex, pageSize, options)
-
+        logger.info({message:"users fetched"})
         const responose = {
             users,
             metaData: {
@@ -89,14 +92,14 @@ const getUser = async (req, res) => {
         res.json(responose)
 
     } catch (e) {
-        console.log(e)
-        res.status(500).send('internal server error')
+        handleErrors(e,res)
     }
 }
 
 const getUserbyEmail = async (req, res) => {
     const email = req.params.email;
     const user = await userRepos.getUserByEmail(email)
+    logger.info({message:"request for user by email"})
     res.status(201).send(user)
 }
 
@@ -110,6 +113,7 @@ const signin = async (req, res) => {
     const result = await cryptoUtils.comparePwd(payLoad.password, dbUser.password)
     if (result) {
         const token = cryptoUtils.generateToken(dbUser)
+        logger.info({message:"generated token"})
         res.status(201)
         res.send(token)
 

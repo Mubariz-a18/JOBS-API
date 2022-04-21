@@ -14,7 +14,11 @@ const dataBase = require('./config/index')
 const app = express()
 const port = 3000;
 
-fs.mkdirSync(path.join(__dirname,"logs")) 
+
+const dir = path.join(__dirname,"logs")
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
 
 var LogStream = fs.createWriteStream(path.join(__dirname, 'logs','request.logs'), { flags: 'a' })
  

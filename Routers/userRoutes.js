@@ -14,9 +14,9 @@ router.post('/signin',userCtrl.signin)
 router.put('/:email',tokenAuth,userCtrl.update)
 
 //recruiter
-router.get('/users/page/:page/size/:size/',tokenAuth,AuthMiddleWare.authorizeAdmin,userCtrl.getUser)
-router.get('/users',tokenAuth,AuthMiddleWare.authorizeAdmin,userCtrl.getUser)
-router.get('/:email',tokenAuth,AuthMiddleWare.authorizeAdmin,userCtrl.getUserbyEmail)
+router.get('/users/page/:page/size/:size/',tokenAuth,AuthMiddleWare.authorizeRecruiter,userCtrl.getUser)
+router.get('/users',tokenAuth,AuthMiddleWare.authorizeRecruiter,userCtrl.getUser)
+router.get('/:email',tokenAuth,AuthMiddleWare.authorizeRecruiter,userCtrl.getUserbyEmail)
 
 //admin
 router.post('/recruiter/signup',tokenAuth,AuthMiddleWare.authorizeAdmin,userCtrl.addRecruiter)
