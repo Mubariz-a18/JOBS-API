@@ -1,5 +1,7 @@
+require('dotenv').config()
+
 const config ={
-   dbConStr : 'mongodb://localhost:27017/JOBSAPI'
+  dbConStr: process.env.dbConStr
 }
 
 module.exports =config

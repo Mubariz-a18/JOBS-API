@@ -16,6 +16,7 @@ async function health(req,res){
         mongoose.connection.close()
     }catch(e){
         logger.error({message:'database failed to connected',error:e})
+        console.log(e)
         res.send('internal server error')
         res.status(500)
     }
