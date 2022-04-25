@@ -33,7 +33,7 @@ const upload = multer({storage})
 //candidate  //public
 router.post('/signup',userCtrl.register)
 router.post('/signin',userCtrl.signin)
-router.put('/:email',upload.single('resume'),userCtrl.update)
+router.put('/:email',tokenAuth,upload.single('resume'),userCtrl.update)
 
 //recruiter
 router.get('/users/page/:page/size/:size/',tokenAuth,AuthMiddleWare.authorizeRecruiter,userCtrl.getUser)
