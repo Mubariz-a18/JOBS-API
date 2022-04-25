@@ -97,7 +97,7 @@ const getUserByEmail = (email) => {
 }
 
 const getUserByToken =(email)=>{
-    const projection = {password:1,role:1,email:1}
+    const projection = {password:1,role:1,email:1,firstName:1,lastName:1}
     return userModel.findOne({email},projection)
 }
 

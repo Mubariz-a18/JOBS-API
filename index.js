@@ -34,7 +34,6 @@ mongoose.connect(dataBase.dbConStr)
 
 .then(()=>{console.log('mongo db is connected')})
 .catch(()=>{console.log('failed to connect to database')})
-console.log(dataBase.dbConStr)
 
 
 app.use(bodyParser.json())

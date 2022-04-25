@@ -1,4 +1,7 @@
 const jwt = require('jsonwebtoken')
+require('dotenv').config()
+
+
 
 const tokenAuth = (req,res,next)=>{
     if(!req.headers.authorization){
@@ -9,7 +12,7 @@ const tokenAuth = (req,res,next)=>{
     const headers = req.headers.authorization
     const token = headers.split(" ")
     const jwtToken = token[1]
-    const result = jwt.verify(jwtToken,'mubariz123$')
+    const result = jwt.verify(jwtToken,process.env.secretKey)
     req.role = result.role
     next()
     }catch(e){
